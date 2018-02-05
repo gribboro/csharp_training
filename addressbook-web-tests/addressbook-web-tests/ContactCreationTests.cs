@@ -46,9 +46,9 @@ namespace WebAddressbookTests
         public void ContactCreationTest()
         {
             OpenHomepage();
-            Login("admin", "secret");
+            Login(new AccountData ("admin", "secret"));
             GoToAddNewPage();
-            FillNewContactForm("aaa", "ffff");
+            FillNewContactForm(new ContactData("aaa", "hhhh"));
             ConfirmContactCreation();
             Logout();
         }
@@ -64,12 +64,12 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("submit")).Click();
         }
 
-        private void FillNewContactForm(string firstName, string lastName)
+        private void FillNewContactForm(ContactData contact)
         {
             driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(firstName);
+            driver.FindElement(By.Name("firstname")).SendKeys(contact.FirstName);
             driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(lastName);
+            driver.FindElement(By.Name("lastname")).SendKeys(contact.LastName);
         }
 
         private void GoToAddNewPage()
@@ -77,12 +77,12 @@ namespace WebAddressbookTests
             driver.FindElement(By.LinkText("add new")).Click();
         }
 
-        private void Login(string username, string password)
+        private void Login(AccountData account)
         {
             driver.FindElement(By.Name("user")).Clear();
-            driver.FindElement(By.Name("user")).SendKeys(username);
+            driver.FindElement(By.Name("user")).SendKeys(account.Username);
             driver.FindElement(By.Name("pass")).Clear();
-            driver.FindElement(By.Name("pass")).SendKeys(password);
+            driver.FindElement(By.Name("pass")).SendKeys(account.Password);
             driver.FindElement(By.CssSelector("input[type=\"submit\"]")).Click();
         }
 
