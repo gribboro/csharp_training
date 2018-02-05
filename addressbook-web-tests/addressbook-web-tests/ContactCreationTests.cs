@@ -7,10 +7,10 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 
-namespace SeleniumTests
+namespace WebAddressbookTests
 {
     [TestFixture]
-    public class Untitled
+    public class ContactCreationTests
     {
         private IWebDriver driver;
         private StringBuilder verificationErrors;
@@ -33,7 +33,7 @@ namespace SeleniumTests
         {
             try
             {
-                driver.Quit();
+                //driver.Quit();
             }
             catch (Exception)
             {
@@ -43,22 +43,54 @@ namespace SeleniumTests
         }
 
         [Test]
-        public void TheUntitledTest()
+        public void ContactCreationTest()
         {
-            driver.Navigate().GoToUrl(baseURL + "/addressbook/");
-            driver.FindElement(By.Name("user")).Clear();
-            driver.FindElement(By.Name("user")).SendKeys("admin");
-            driver.FindElement(By.Name("pass")).Clear();
-            driver.FindElement(By.Name("pass")).SendKeys("secret");
-            driver.FindElement(By.CssSelector("input[type=\"submit\"]")).Click();
-            driver.FindElement(By.LinkText("add new")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys("fff");
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys("gggg");
-            // ERROR: Caught exception [Error: Dom locators are not implemented yet!]
+            OpenHomepage();
+            Login("admin", "secret");
+            GoToAddNewPage();
+            FillNewContactForm("aaa", "ffff");
+            ConfirmContactCreation();
+            Logout();
+        }
+
+        private void Logout()
+        {
+            // ERROR: Caught exception [Error: Dom locators are not implemented yet!] (???)
             driver.FindElement(By.LinkText("Logout")).Click();
         }
+
+        private void ConfirmContactCreation()
+        {
+            driver.FindElement(By.Name("submit")).Click();
+        }
+
+        private void FillNewContactForm(string firstName, string lastName)
+        {
+            driver.FindElement(By.Name("firstname")).Clear();
+            driver.FindElement(By.Name("firstname")).SendKeys(firstName);
+            driver.FindElement(By.Name("lastname")).Clear();
+            driver.FindElement(By.Name("lastname")).SendKeys(lastName);
+        }
+
+        private void GoToAddNewPage()
+        {
+            driver.FindElement(By.LinkText("add new")).Click();
+        }
+
+        private void Login(string username, string password)
+        {
+            driver.FindElement(By.Name("user")).Clear();
+            driver.FindElement(By.Name("user")).SendKeys(username);
+            driver.FindElement(By.Name("pass")).Clear();
+            driver.FindElement(By.Name("pass")).SendKeys(password);
+            driver.FindElement(By.CssSelector("input[type=\"submit\"]")).Click();
+        }
+
+        private void OpenHomepage()
+        {
+            driver.Navigate().GoToUrl(baseURL + "/addressbook/");
+        }
+
         private bool IsElementPresent(By by)
         {
             try
