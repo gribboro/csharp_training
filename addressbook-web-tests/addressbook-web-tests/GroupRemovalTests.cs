@@ -7,22 +7,17 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupCreationTests : TestBase
+    public class GroupRemovalTests : TestBase
     {
         [Test]
-        public void GroupCreationTest()
+        public void GroupRemovalTest()
         {
             OpenHomepage();
             Login(new AccountData("admin", "secret"));
             OpenGroups();
-            InitNewGroupCreation();
-            GroupData group = new GroupData("aaa");
-            group.Footer = "www";
-            group.Header = "lll";
-            FillGroupForm(group);
-            SubmitGroupCreation();
+            SelectGroup(1);
+            RemoveGroup();
             ReturnToGroupsPage();
-            Logout();
         }
     }
 }
