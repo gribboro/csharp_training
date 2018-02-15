@@ -12,11 +12,11 @@ namespace WebAddressbookTests
         [Test]
         public void ContactCreationTest()
         {
-            navigator.OpenHomepage();
-            loginHelper.Login(new AccountData ("admin", "secret"));
-            navigator.OpenAddNewPage();
-            contactHelper.FillNewContactForm(new ContactData("aaa", "hhhh"));
-            contactHelper.ConfirmContactCreation();
+            app.Navigator.OpenHomepage();
+            app.Auth.Login(new AccountData ("admin", "secret"));
+            app.Navigator.OpenAddNewPage();
+            app.Contacts.FillNewContactForm(new ContactData("aaa", "hhhh"));
+            app.Contacts.ConfirmContactCreation();
             //loginHelper.Logout();
         }
     }
