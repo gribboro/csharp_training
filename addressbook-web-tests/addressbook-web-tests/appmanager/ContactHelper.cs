@@ -16,12 +16,12 @@ namespace WebAddressbookTests
             : base(manager)
         {
         }
-        
+
         public void Create(ContactData contact)
         {
             manager.Navigator.OpenAddNewPage();
 
-            FillNewContactForm(contact);
+            FillContactForm(contact);
             ConfirmContactCreation();
         }
 
@@ -33,7 +33,17 @@ namespace WebAddressbookTests
             RemoveContact();
         }
 
-        private ContactHelper FillNewContactForm(ContactData contact)
+        internal void Modify(ContactData newData)
+        {
+            manager.Navigator.OpenHomepage();
+
+            InitContactModification();
+            FillContactForm(newData);
+            SubmitContactModification();
+            ReturnToAddressList();
+        }
+
+        private ContactHelper FillContactForm(ContactData contact)
         {
             driver.FindElement(By.Name("firstname")).Clear();
             driver.FindElement(By.Name("firstname")).SendKeys(contact.FirstName);
@@ -58,6 +68,24 @@ namespace WebAddressbookTests
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
             driver.SwitchTo().Alert().Accept();
+            return this;
+        }
+
+        private ContactHelper InitContactModification()
+        {
+            driver.FindElement(By.CssSelector("img[alt=\"Edit\"]")).Click();
+            return this;
+        }
+
+        private ContactHelper SubmitContactModification()
+        {
+            driver.FindElement(By.XPath("(//input[@name='update'])[2]")).Click();
+            return this;
+        }
+
+        private ContactHelper ReturnToAddressList()
+        {
+            driver.FindElement(By.LinkText("home page")).Click();
             return this;
         }
     }
