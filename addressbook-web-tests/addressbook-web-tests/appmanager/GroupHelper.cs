@@ -50,6 +50,13 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public int GetGroupNumber()
+        {
+            manager.Navigator.OpenGroups();
+
+            return driver.FindElements(By.ClassName("group")).Count;
+        }
+
         private GroupHelper InitNewGroupCreation()
         {
             driver.FindElement(By.Name("new")).Click();

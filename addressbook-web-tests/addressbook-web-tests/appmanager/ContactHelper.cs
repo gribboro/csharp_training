@@ -43,6 +43,13 @@ namespace WebAddressbookTests
             ReturnToAddressList();
         }
 
+        public int GetContactNumber()
+        {
+            manager.Navigator.OpenHomepage();
+
+            return driver.FindElements(By.ClassName("center")).Count;
+        }
+
         private ContactHelper FillContactForm(ContactData contact)
         {
             Type(By.Name("firstname"), contact.FirstName);
