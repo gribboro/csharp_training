@@ -3,18 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace WebAddressbookTests
 {
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
-        private string firstName;
-        private string lastName;
+        public string allPhones; 
 
         public ContactData(string firstName, string lastName)
         {
-            this.firstName = firstName;
-            this.lastName = lastName;
+            FirstName = firstName;
+            LastName = lastName;
+        }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string Address { get; set; }
+
+        public string HomePhone { get; set; }
+
+        public string MobilePhone { get; set; }
+
+        public string WorkPhone { get; set; }
+
+        public string AllPhones
+        {
+            get
+            {
+                if (allPhones != null)
+                {
+                    return allPhones;
+                }
+                else
+                {
+                    return (Cleanup(HomePhone) + Cleanup(MobilePhone) + Cleanup(WorkPhone))
+                        .Trim();
+                }
+            }
+
+            set
+            {
+                allPhones = value;
+            }
         }
 
         public bool Equals(ContactData other)
@@ -53,28 +86,13 @@ namespace WebAddressbookTests
             return LastName.CompareTo(other.LastName);
         }
 
-        public string FirstName
+        private string Cleanup(string phone)
         {
-            get
+            if (phone == null || phone == "")
             {
-                return firstName;
+                return "";
             }
-            set
-            {
-                firstName = value;
-            }
-        }
-
-        public string LastName
-        {
-            get
-            {
-                return lastName;
-            }
-            set
-            {
-                lastName = value;
-            }
+            return Regex.Replace(phone, "[ -()]", "") + "\r\n";
         }
     }
 }
