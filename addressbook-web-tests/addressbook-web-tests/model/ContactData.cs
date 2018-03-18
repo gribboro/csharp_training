@@ -9,7 +9,9 @@ namespace WebAddressbookTests
 {
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
-        public string allPhones; 
+        private string allPhones;
+
+        private string allData;
 
         public ContactData(string firstName, string lastName)
         {
@@ -37,16 +39,47 @@ namespace WebAddressbookTests
                 {
                     return allPhones;
                 }
-                else
-                {
-                    return (Cleanup(HomePhone) + Cleanup(MobilePhone) + Cleanup(WorkPhone))
-                        .Trim();
-                }
+                return (Cleanup(HomePhone) + Cleanup(MobilePhone) + Cleanup(WorkPhone))
+                    .Trim();
             }
 
             set
             {
                 allPhones = value;
+            }
+        }
+
+        public string AllData
+        {
+            get
+            {
+                if (allData != null)
+                {
+                    return Regex.Replace(allData.Replace("\r\n", ""), "[ --():]", "");
+                }
+                string result = FirstName + LastName + Address;
+
+                if (HomePhone != null && HomePhone != "")
+                {
+                    result += "H" + HomePhone;
+                }
+
+                if (MobilePhone != null && MobilePhone != "")
+                {
+                    result += "M" + MobilePhone;
+                }
+
+                if (WorkPhone != null && WorkPhone != "")
+                {
+                    result += "W" + WorkPhone;
+                }
+
+                return Cleanup(result).Replace("\r\n", "");
+            }
+
+            set
+            {
+                allData = value;
             }
         }
 
@@ -86,13 +119,13 @@ namespace WebAddressbookTests
             return LastName.CompareTo(other.LastName);
         }
 
-        private string Cleanup(string phone)
+        private string Cleanup(string data)
         {
-            if (phone == null || phone == "")
+            if (data == null || data == "")
             {
                 return "";
             }
-            return Regex.Replace(phone, "[ -()]", "") + "\r\n";
+            return Regex.Replace(data, "[ --()]", "") + "\r\n";
         }
     }
 }

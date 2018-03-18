@@ -13,6 +13,8 @@ namespace WebAddressbookTests
 {
     public class ContactHelper : HelperBase
     {
+        private List<ContactData> contactCache = null;
+
         public ContactHelper(ApplicationManager manager)
             : base(manager)
         {
@@ -39,13 +41,11 @@ namespace WebAddressbookTests
             manager.Navigator.OpenHomepage();
 
             SelectContact(v);
-            InitContactModification(0);
+            ClickContactButton(0, 7);
             FillContactForm(newData);
             SubmitContactModification();
             ReturnToAddressList();
         }
-
-        private List<ContactData> contactCache = null;
 
         public List<ContactData> GetContactList()
         {
@@ -75,6 +75,12 @@ namespace WebAddressbookTests
         {
             Type(By.Name("firstname"), contact.FirstName);
             Type(By.Name("lastname"), contact.LastName);
+            Type(By.Name("address"), contact.Address);
+
+            Type(By.Name("home"), contact.HomePhone);
+            Type(By.Name("mobile"), contact.MobilePhone);
+            Type(By.Name("work"), contact.WorkPhone);
+
             return this;
         }
 
@@ -99,10 +105,10 @@ namespace WebAddressbookTests
             return this;
         }
 
-        private ContactHelper InitContactModification(int index)
+        private ContactHelper ClickContactButton(int rowIndex, int column)
         {
-            driver.FindElements(By.Name("entry"))[index]
-                .FindElements(By.TagName("td"))[7]
+            driver.FindElements(By.Name("entry"))[rowIndex]
+                .FindElements(By.TagName("td"))[column]
                 .FindElement(By.TagName("a"))
                 .Click();
             return this;
@@ -139,10 +145,10 @@ namespace WebAddressbookTests
             };
         }
 
-        public ContactData GetContactInformationFromForm(int index)
+        public ContactData GetContactInformationFromForm(int index, int cell)
         {
             manager.Navigator.OpenHomepage();
-            InitContactModification(index);
+            ClickContactButton(index, cell);
 
             string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
             string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
@@ -158,6 +164,18 @@ namespace WebAddressbookTests
                 HomePhone = homePhone,
                 MobilePhone = mobilePhone,
                 WorkPhone = workPhone
+            };
+        }
+
+        internal ContactData GetContactInformationFromDetails(int index, int cell)
+        {
+            manager.Navigator.OpenHomepage();
+            ClickContactButton(index, cell);
+
+            string allData = driver.FindElement(By.Id("content")).Text;
+            return new ContactData("", "")
+            {
+                AllData = allData
             };
         }
 
