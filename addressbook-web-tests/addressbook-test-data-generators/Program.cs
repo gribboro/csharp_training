@@ -30,8 +30,8 @@ namespace addressbook_test_data_generators
                 {
                     groups.Add(new GroupData(TestBase.GenerateRandomString(10))
                     {
-                        Header = TestBase.GenerateRandomString(100),
-                        Footer = TestBase.GenerateRandomString(100)
+                        Header = TestBase.GenerateRandomString(10),
+                        Footer = TestBase.GenerateRandomString(10)
                     });
                 }
 
