@@ -42,7 +42,7 @@ namespace addressbook_test_data_generators
                 else
                 {
                     StreamWriter writer = new StreamWriter(filename);
-
+                    
                     if (format == "csv")
                     {
                         WriteGroupsToCsvFile(groups, writer);
@@ -57,7 +57,7 @@ namespace addressbook_test_data_generators
                     }
                     else
                     {
-                        Console.Out.Write("Unrecognized format " + format);
+                        System.Console.Out.Write("Unrecognized format " + format);
                     }
                     writer.Close();
                 }
