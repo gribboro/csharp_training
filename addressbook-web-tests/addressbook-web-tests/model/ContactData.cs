@@ -42,6 +42,9 @@ namespace WebAddressbookTests
 
         public string WorkPhone { get; set; }
 
+        [Column(Name = "deprecated")]
+        public string Deprecated { get; set; }
+
         public string AllPhones
         {
             get
@@ -128,6 +131,14 @@ namespace WebAddressbookTests
                 return FirstName.CompareTo(other.FirstName);
             }
             return LastName.CompareTo(other.LastName);
+        }
+
+        public static List<ContactData> GetAll()
+        {
+            using (AddressbookDB db = new AddressbookDB())
+            {
+                return (from c in db.Contacts.Where(x => x.Deprecated == "0000-00-00 00:00:00") select c).ToList();
+            }
         }
 
         private string Cleanup(string data)

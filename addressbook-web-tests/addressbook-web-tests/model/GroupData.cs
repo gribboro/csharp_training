@@ -63,7 +63,7 @@ namespace WebAddressbookTests
         [Column(Name = "group_id"), PrimaryKey, Identity]
         public string Id { get; set; }
 
-        internal static List<GroupData> GetAll()
+        public static List<GroupData> GetAll()
         {
             using (AddressbookDB db = new AddressbookDB())
             {
@@ -76,7 +76,7 @@ namespace WebAddressbookTests
             using (AddressbookDB db = new AddressbookDB())
             {
                 return (from c in db.Contacts
-                            from gcr in db.GCR.Where(p => p.GroupId == Id && p.ContactId == c.Id)
+                            from gcr in db.GCR.Where(p => p.GroupId == Id && p.ContactId == c.Id && c.Deprecated == "0000-00-00 00:00:00")
                                 select c).Distinct().ToList();
             }
         }
