@@ -36,11 +36,30 @@ namespace WebAddressbookTests
             RemoveContact();
         }
 
+        public void Remove(ContactData contact)
+        {
+            manager.Navigator.OpenHomepage();
+
+            SelectContact(contact.Id);
+            RemoveContact();
+        }
+
         internal void Modify(int v, ContactData newData)
         {
             manager.Navigator.OpenHomepage();
 
             SelectContact(v);
+            ClickContactButton(0, 7);
+            FillContactForm(newData);
+            SubmitContactModification();
+            ReturnToAddressList();
+        }
+
+        internal void Modify(ContactData contact, ContactData newData)
+        {
+            manager.Navigator.OpenHomepage();
+
+            SelectContact(contact.Id);
             ClickContactButton(0, 7);
             FillContactForm(newData);
             SubmitContactModification();
@@ -57,6 +76,11 @@ namespace WebAddressbookTests
             CommitAddingContactToGroup();
             new WebDriverWait(driver, TimeSpan.FromSeconds(10))
                 .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+        }
+
+        public void RemoveContactFromGroup(ContactData contact, GroupData group)
+        {
+            throw new NotImplementedException();
         }
 
         public List<ContactData> GetContactList()
@@ -77,10 +101,10 @@ namespace WebAddressbookTests
             return contactCache;
         }
 
-        public int GetContactNumber()
+        public int GetContactCount()
         {
             manager.Navigator.OpenHomepage();
-            return driver.FindElements(By.ClassName("center")).Count;
+            return driver.FindElements(By.Name("selected[]")).Count;
         }
 
         private ContactHelper FillContactForm(ContactData contact)
@@ -206,7 +230,9 @@ namespace WebAddressbookTests
 
         private void SelectContact(string contactId)
         {
-            driver.FindElement(By.Id(contactId)).Click();
+            driver.FindElement(By.XPath("//*[@id=" + contactId + "]")).Click();
+
+            //*[@id="60"]
         }
 
         private void SelectGroupToAdd(string name)

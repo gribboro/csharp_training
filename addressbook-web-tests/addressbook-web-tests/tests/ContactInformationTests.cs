@@ -25,7 +25,7 @@ namespace WebAddressbookTests
         [Test]
         public void DetailedInformationTest()
         {
-            while (app.Contacts.GetContactNumber() != 0)
+            while (app.Contacts.GetContactCount() != 0)
             {
                 app.Contacts.Remove(0);
             }
